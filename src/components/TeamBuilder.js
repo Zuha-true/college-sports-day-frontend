@@ -1,9 +1,8 @@
 // frontend/src/components/TeamBuilder.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 import API_URL from '../config';
-import React, { useState, useEffect, useRef } from 'react'; // Add useRef
 
 function TeamBuilder({ sport, teams, onTeamsUpdate }) {
   const [availableStudents, setAvailableStudents] = useState([]);
@@ -14,20 +13,21 @@ function TeamBuilder({ sport, teams, onTeamsUpdate }) {
 
   const refreshIntervalRef = useRef(null);
 
-useEffect(() => {
-  fetchAvailableStudents();
-  
-  // Auto-refresh every 5 seconds
-  refreshIntervalRef.current = setInterval(() => {
+  useEffect(() => {
     fetchAvailableStudents();
-  }, 5000);
-  
-  return () => {
-    if (refreshIntervalRef.current) {
-      clearInterval(refreshIntervalRef.current);
-    }
-  };
-}, [sport, teams]);
+    
+    // Auto-refresh every 5 seconds
+    refreshIntervalRef.current = setInterval(() => {
+      fetchAvailableStudents();
+    }, 5000);
+    
+    return () => {
+      if (refreshIntervalRef.current) {
+        clearInterval(refreshIntervalRef.current);
+      }
+    };
+  }, [sport, teams]);
+
   const fetchAvailableStudents = async () => {
     try {
       const response = await axios.get(`${API_URL}/students/by-sport/${sport}`);
