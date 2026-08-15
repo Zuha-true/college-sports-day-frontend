@@ -1,70 +1,153 @@
-# Getting Started with Create React App
+# 🏆 College Sports Day Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack web application for organizing and managing college sports day events — student registration, dynamic team building, and live tournament bracket tracking, all in one platform.
 
-## Available Scripts
+![Status](https://img.shields.io/badge/status-active-success)
+![Node](https://img.shields.io/badge/node-%3E%3D14-green)
+![React](https://img.shields.io/badge/react-18.2.0-61DAFB)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## ✨ Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 🔐 **Role-based access** — Students browse freely (no login), admins manage via secure password login
+- 📝 **Student registration** — Register with interests across 6 sports via checkboxes
+- 👥 **Dynamic team builder** — Auto-filters already-assigned students so no one ends up double-booked
+- 🏅 **Live tournament brackets** — Single-elimination bracket auto-generates and advances winners each round
+- ⚡ **Concurrency-safe** — Database-level row locking prevents conflicts when multiple admins work simultaneously
+- 📱 **Fully responsive** — Works seamlessly on mobile, tablet, and desktop
+- 🔄 **Real-time sync** — Auto-refreshing views keep admins and students up to date
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🏟️ Supported Sports
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Cricket 🏏 · Throwball ⚡ · Kho-Kho 🏃 · Badminton Doubles 🏸 · Relay 🏃‍♂️ · Tug of War 💪
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🛠️ Tech Stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Layer | Technology |
+|---|---|
+| **Frontend** | React, React Router, Axios |
+| **Backend** | Node.js, Express.js |
+| **Database** | MySQL |
+| **Auth** | JWT (JSON Web Tokens) |
+| **Deployment** | Vercel (frontend) · Render (backend) · Railway (database) |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🏗️ Architecture
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+Frontend (React) → REST API (Express) → MySQL Database
+      ↓                    ↓
+  Vercel               Render + Railway
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Key design decisions:**
+- Transactional writes (`BEGIN`/`COMMIT`/`ROLLBACK`) with row-level locking (`FOR UPDATE`) to safely handle concurrent admin actions
+- Bracket generation and advancement handled server-side to keep a single source of truth
+- Stateless JWT auth for admin sessions — no server-side session storage needed
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 📁 Project Structure
 
-## Learn More
+```
+college-sports-day/
+├── backend/
+│   ├── server.js
+│   ├── database.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── students.js
+│   │   ├── teams.js
+│   │   └── brackets.js
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── pages/
+│   │   ├── components/
+│   │   └── styles/
+│   └── package.json
+├── database/
+│   └── schema.sql
+└── README.md
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🚀 Getting Started
 
-### Code Splitting
+### Prerequisites
+- Node.js (v14+)
+- MySQL (v5.7+)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Installation
 
-### Analyzing the Bundle Size
+```bash
+# Clone the repo
+git clone https://github.com/your-username/college-sports-day.git
+cd college-sports-day
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Set up the database
+mysql -u root -p < database/schema.sql
 
-### Making a Progressive Web App
+# Backend
+cd backend
+npm install
+cp .env.example .env   # fill in your DB credentials
+npm start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+# Frontend (new terminal)
+cd frontend
+npm install
+npm start
+```
 
-### Advanced Configuration
+App runs at `http://localhost:3000` (backend on `:5000`).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Environment Variables
 
-### Deployment
+**backend/.env**
+```env
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=college_sports_day
+JWT_SECRET=your_random_secret_key
+ADMIN_PASSWORD=your_admin_password
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 📡 API Overview
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/auth/login` | Admin login |
+| `GET/POST` | `/api/students` | List / register students |
+| `GET/POST/PUT` | `/api/teams/:sport` | Manage teams per sport |
+| `GET/POST/PUT` | `/api/brackets/:sport` | Generate & update bracket |
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Live score entry per match (not just win/loss)
+- [ ] Email/SMS notifications for match schedules
+- [ ] Export results as PDF
+- [ ] Multi-event support (beyond single sports day)
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome. Feel free to check the [issues page](../../issues).
+
+---
+
+⭐ If you found this useful, consider giving it a star!
